@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SurvivalIsland.io - Hayatta Kalma Oyunu</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        #loading-screen {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-color: #222;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 1000;
+        }
+        
+        #loading-bar {
+            width: 400px;
+            height: 20px;
+            background-color: #444;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        
+        #loading-progress {
+            width: 0%;
+            height: 100%;
+            background-color: #4CAF50;
+            transition: width 0.3s;
+        }
+        
+        #game-title {
+            font-size: 40px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
+        }
+        
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Yükleme Ekranı -->
+    <div id="loading-screen">
+        <h1 id="game-title">SurvivalIsland.io</h1>
+        <p>Meteorlara dikkat et! Can yakabilirler!</p>
+        <div id="loading-bar">
+            <div id="loading-progress"></div>
+        </div>
+        <p id="loading-text">Oyun yükleniyor...</p>
+    </div>
+    
+    <!-- Oyun Konteyneri -->
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+    </div>
+    
+    <!-- Simüle edilmiş yükleme animasyonu -->
+    <script>
+        // Yükleme çubuğu animasyonu
+        let progress = 0;
+        const loadingProgress = document.getElementById('loading-progress');
+        const loadingText = document.getElementById('loading-text');
+        const loadingScreen = document.getElementById('loading-screen');
+        
+        const loadingInterval = setInterval(() => {
+            progress += Math.random() * 10;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(loadingInterval);
+                loadingText.textContent = "Yükleme tamamlandı! Oyun başlatılıyor...";
+                
+                // Yükleme ekranını kaldır
+                setTimeout(() => {
+                    loadingScreen.style.opacity = '0';
+                    loadingScreen.style.transition = 'opacity 1s';
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 1000);
+                }, 500);
+            }
+            loadingProgress.style.width = `${progress}%`;
+        }, 200);
+    </script>
+    
+    <!-- Oyun JS Modülü -->
+    <script type="module" src="main.js"></script>
+</body>
+</html> 
